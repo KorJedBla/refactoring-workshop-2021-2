@@ -215,22 +215,31 @@ Controller::Segment Controller::getNewHead() const
 
 void Controller::receive(std::unique_ptr<Event> e)
 {
-    try {
-        handleTimePassed(*dynamic_cast<EventT<TimeoutInd> const&>(*e));
-    } catch (std::bad_cast&) {
-        try {
-            handleDirectionChange(*dynamic_cast<EventT<DirectionInd> const&>(*e));
-        } catch (std::bad_cast&) {
-            try {
-                handleFoodPositionChange(*dynamic_cast<EventT<FoodInd> const&>(*e));
-            } catch (std::bad_cast&) {
-                try {
-                    handleNewFood(*dynamic_cast<EventT<FoodResp> const&>(*e));
-                } catch (std::bad_cast&) {
-                    throw UnexpectedEventException();
-                }
-            }
+    switch (e -> getMessageId()) 
+    {
+        case TimeoutInd::MESSAGE_ID:
+        if ()
+        {
+        return handleTimePassed();
         }
+        case DirectionInd::MESSAGE_ID:
+        if ()
+        {
+        return handleDirectionChange(std::move(e));
+        }
+        case FoodInd::MESSAGE_ID:
+        if ()
+        {
+        return handleFoodPositionChange(std::move(e));
+        }
+        case FoodResp::MESSAGE_ID:
+        if ()
+        {
+        return handleNewFood(std::move(e));
+        }
+        default:        
+                throw UnexpectedEventException();
+        
     }
 }
 
